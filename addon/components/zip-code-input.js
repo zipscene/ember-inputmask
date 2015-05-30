@@ -1,4 +1,7 @@
 import InputMaskComponent from 'ember-inputmask/components/input-mask';
+import Ember from 'ember';
+
+const observer = Ember.observer;
 
 /**
  * `{{zip-code-input}}` component.
@@ -18,7 +21,7 @@ export default InputMaskComponent.extend({
 
   fullCode: false,
 
-  updateMask: function() {
+  updateMask: observer('mask', 'fullCode', function() {
     if (this.get('fullCode')) {
       this.set('mask', '99999[-9999]');
     } else {
@@ -26,5 +29,5 @@ export default InputMaskComponent.extend({
     }
 
     this._super();
-  }.observes('mask', 'fullCode')
+  })
 });

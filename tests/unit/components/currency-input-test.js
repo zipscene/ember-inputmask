@@ -3,7 +3,9 @@ import { moduleForComponent, test } from 'ember-qunit';
 import startApp from '../../helpers/start-app';
 var App;
 
-moduleForComponent('currency-input', 'currency-input component', {
+moduleForComponent('currency-input', 'component:currency-input', {
+  unit: true,
+
   setup: function() {
     App = startApp();
   },

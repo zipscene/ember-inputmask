@@ -3,7 +3,9 @@ import { moduleForComponent, test } from 'ember-qunit';
 import startApp from '../../helpers/start-app';
 var App;
 
-moduleForComponent('input-mask', 'input-mask component', {
+moduleForComponent('input-mask', 'component:input-mask', {
+  unit: true,
+
   setup: function() {
     App = startApp();
   },
@@ -12,13 +14,13 @@ moduleForComponent('input-mask', 'input-mask component', {
   }
 });
 
-test('regex works', function() {
-  expect(3);
+test('regex works', function(assert) {
+  assert.expect(3);
 
-  var component = this.subject();
+  const component = this.subject();
 
   // append the component to the DOM
-  this.append();
+  this.render();
 
   Ember.run(function(){
     component.set('mask', 'regex');
@@ -29,44 +31,42 @@ test('regex works', function() {
   fillIn('input', 'test');
   triggerEvent('input', 'blur');
   andThen(function() { // wait for async helpers to complete
-    equal(find('input').val(), '');
+    assert.equal(find('input').val(), '');
   });
 
   fillIn('input', 'you_can_only_type_this');
   triggerEvent('input', 'blur');
   andThen(function() {
-    equal(find('input').val(), 'you_can_only_type_this');
+    assert.equal(find('input').val(), 'you_can_only_type_this');
   });
 
   fillIn('input', 'you_can_only_type_thisssss');
   triggerEvent('input', 'blur');
   andThen(function() {
-    equal(find('input').val(), 'you_can_only_type_thisssss');
+    assert.equal(find('input').val(), 'you_can_only_type_thisssss');
   });
 });
 
-test('showMaskOnHover works', function() {
-  expect(3);
+test('showMaskOnHover works', function(assert) {
+  assert.expect(3);
 
-  var component = this.subject();
+  const component = this.subject({
+    mask: '9-9+9'
+  });
 
   // append the component to the DOM
-  this.append();
-
-  Ember.run(function(){
-    component.set('mask', '9-9+9');
-  });
+  this.render();
 
   andThen(function() { // wait for async helpers to complete
     var input = find('input');
     input.mouseenter();
-    equal(find('input')[0].value, '_-_+_');
+    assert.equal(find('input')[0].value, '_-_+_');
   });
 
   andThen(function() {
     var input = find('input');
     input.mouseleave();
-    equal(find('input')[0].value, '');
+    assert.equal(find('input')[0].value, '');
   });
 
   Ember.run(function(){
@@ -76,7 +76,7 @@ test('showMaskOnHover works', function() {
   andThen(function() {
     var input = find('input');
     input.mouseenter();
-    equal(find('input')[0].value, '');
+    assert.equal(find('input')[0].value, '');
   });
 });
 
@@ -114,13 +114,13 @@ test('showMaskOnFocus works', function() {
 });
 */
 
-test('clearIncomplete works', function() {
-  expect(1);
+test('clearIncomplete works', function(assert) {
+  assert.expect(1);
 
-  var component = this.subject();
+  const component = this.subject();
 
   // append the component to the DOM
-  this.append();
+  this.render();
 
   Ember.run(function(){
     component.set('mask', '9-9+9');
@@ -130,17 +130,17 @@ test('clearIncomplete works', function() {
   fillIn('input', '6');
   triggerEvent('input', 'blur');
   andThen(function() {
-    equal(find('input').val(), '');
+    assert.equal(find('input').val(), '');
   });
 });
 
-test('greedyMask works', function() {
-  expect(3);
+test('greedyMask works', function(assert) {
+  assert.expect(3);
 
-  var component = this.subject();
+  const component = this.subject();
 
   // append the component to the DOM
-  this.append();
+  this.render();
 
   Ember.run(function(){
     component.set('mask', '9[99]');
@@ -149,7 +149,8 @@ test('greedyMask works', function() {
   andThen(function() {
     var input = find('input');
     input.mouseenter();
-    equal(find('input')[0].value, '_');
+    assert.equal(find('input')[0].value, '_');
+
   });
 
   fillIn('input', '66');
@@ -157,7 +158,7 @@ test('greedyMask works', function() {
   andThen(function() {
     var input = find('input');
     input.mouseenter();
-    equal(find('input')[0].value, '66_');
+    assert.equal(find('input')[0].value, '66_');
   });
 
   Ember.run(function(){
@@ -168,6 +169,6 @@ test('greedyMask works', function() {
   andThen(function() {
     var input = find('input');
     input.mouseenter();
-    equal(find('input')[0].value, '___');
+    assert.equal(find('input')[0].value, '___');
   });
 });

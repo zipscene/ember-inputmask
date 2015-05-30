@@ -3,7 +3,9 @@ import { moduleForComponent, test } from 'ember-qunit';
 import startApp from '../../helpers/start-app';
 var App;
 
-moduleForComponent('date-input', 'date-input component', {
+moduleForComponent('date-input', 'component:date-input', {
+  unit: true,
+
   setup: function() {
     App = startApp();
   },

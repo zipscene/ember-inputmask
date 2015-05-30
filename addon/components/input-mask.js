@@ -1,5 +1,8 @@
 import Ember from 'ember';
 
+const on = Ember.on;
+const observer = Ember.observer;
+
 /**
  * `{{input-mask}}` component.
  *
@@ -37,9 +40,9 @@ export default Ember.TextField.extend({
   // it's shared between all instances of the object. Since we don't want that, and
   // we do want to store options somewhere, we need to initialize an options object
   // whenever we create an `input-mask`.
-  initializeOptions: function() {
+  initializeOptions: on('init', function() {
     this.set('options', {});
-  }.on('init'),
+  }),
 
   // Initialize the mask by forcing a
   // call to the updateMask function
@@ -48,9 +51,9 @@ export default Ember.TextField.extend({
   },
 
   // Remove the mask from the input
-  teardownMask: function() {
+  teardownMask: on('willDestroyElement', function() {
     this.$().inputmask('remove');
-  }.on('willDestroyElement'),
+  }),
 
   setMask: function() {
     var mask    = this.get('mask'),
@@ -76,7 +79,7 @@ export default Ember.TextField.extend({
   // This observer is meant to be extensible so that other fields can add options
   // (See `decimal-input`), which is why the actual setting of the mask is handled
   // in another function.
-  updateMask: function() {
+  updateMask: observer('mask', 'maskPlaceholder', 'showMaskOnFocus', 'showMaskOnHover', 'rightAlign', 'clearIncomplete', 'greedyMask', 'pattern', 'regex', function() {
     if (this.get('mask').toLowerCase() === 'regex') {
       // Regex has to capitalized for the plugin, but that's annoying
       // so let's just allow users to enter it however they want...
@@ -97,7 +100,7 @@ export default Ember.TextField.extend({
     });
 
     this.setMask();
-  }.observes('mask', 'maskPlaceholder', 'showMaskOnFocus', 'showMaskOnHover', 'rightAlign', 'clearIncomplete', 'greedyMask', 'pattern', 'regex'),
+  }),
 
   updateVar: function () {
     if (this.$().inputmask('unmaskedvalue') !== this.get('unmaskedValue')) {
@@ -106,17 +109,17 @@ export default Ember.TextField.extend({
   },
 
   // Unmask the value of the field and set the property.
-  setUnmaskedValue: function() {
+  setUnmaskedValue: observer('value', function() {
     this.set('unmaskedValue', this.$().inputmask('unmaskedvalue'));
-  }.observes('value'),
+  }),
 
   // When the unmaskedValue changes, set the value.
-  setValue: function() {
+  setValue: observer('unmaskedValue', function() {
     var debounce = this.get('debounce');
     if ( debounce ) {
       Ember.run.debounce(this, this.updateVar, debounce);
     } else {
       this.updateVar();
     }
-  }.observes('unmaskedValue')
+  })
 });

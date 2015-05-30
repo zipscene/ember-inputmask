@@ -1,4 +1,7 @@
 import InputMaskComponent from 'ember-inputmask/components/input-mask';
+import Ember from 'ember';
+
+const observer = Ember.observer;
 
 /**
  * `{{phone-number-input}}` component.
@@ -17,11 +20,11 @@ import InputMaskComponent from 'ember-inputmask/components/input-mask';
 export default InputMaskComponent.extend({
   mask:    '(999) 999-9999',
 
-  updateMask: function() {
+  updateMask: observer('mask', 'extensions', function() {
     if (this.get('extensions')) {
       this.set('mask', '(999) 999-9999[ x 9{1,4}]');
     }
 
     this._super();
-  }.observes('mask', 'extensions')
+  })
 });

@@ -1,4 +1,7 @@
 import InputMaskComponent from 'ember-inputmask/components/input-mask';
+import Ember from 'ember';
+
+const observer = Ember.observer;
 
 /**
  * `{{number-input}}` component.
@@ -29,7 +32,7 @@ export default InputMaskComponent.extend({
   radix:     '.',
   groupSize: '3',
 
-  updateMask: function() {
+  updateMask: observer('mask', 'group', 'decimal', 'separator', 'radix', 'groupSize', function() {
     this.setProperties({
       'options.autoGroup':      this.get('group'),
       'options.groupSeparator': this.get('separator'),
@@ -46,5 +49,5 @@ export default InputMaskComponent.extend({
     }
 
     this._super();
-  }.observes('mask', 'group', 'decimal', 'separator', 'radix', 'groupSize')
+  })
 });
