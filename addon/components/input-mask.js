@@ -91,6 +91,14 @@ export default Ember.TextField.extend({
       this.set('options.regex', this.get('pattern') || this.get('regex'));
     }
 
+    var oncomplete = () => {
+      this.set('complete', true);
+    };
+
+    var onincomplete = () => {
+      this.set('incomplete', true);
+    };
+
     this.setProperties({
       'options.placeholder'    : this.get('maskPlaceholder'),
       'options.showMaskOnFocus': this.get('showMaskOnFocus'),
@@ -98,6 +106,8 @@ export default Ember.TextField.extend({
       'options.rightAlign':      this.get('rightAlign'),
       'options.clearIncomplete': this.get('clearIncomplete'),
       'options.greedy':          this.get('greedyMask'),
+      'options.oncomplete':      oncomplete,
+      'options.onincomplete':    onincomplete
     });
 
     this.setMask();
