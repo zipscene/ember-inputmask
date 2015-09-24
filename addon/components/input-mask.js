@@ -93,11 +93,11 @@ export default Ember.TextField.extend({
       this.set('options.regex', this.get('pattern') || this.get('regex'));
     }
 
-    var oncomplete = () => {
+    var oncomplete = function() {
       this.set('complete', true);
     };
 
-    var onincomplete = () => {
+    var onincomplete = function() {
       this.set('incomplete', true);
     };
 
