@@ -95,11 +95,11 @@ export default Ember.TextField.extend({
 
     var oncomplete = function() {
       this.set('complete', true);
-    };
+    }.bind(this);
 
     var onincomplete = function() {
       this.set('incomplete', true);
-    };
+    }.bind(this);
 
     this.setProperties({
       'options.placeholder'    : this.get('maskPlaceholder'),
