@@ -38,7 +38,11 @@ export default InputMaskComponent.extend({
     Ember.run.once(this, 'updateMask');
   }),
 
-  updateCardType: Ember.observer('unmaskedValue', function() {
+  _updateCardType: Ember.observer('unmaskedValue', function() {
+    this.updateCardType();
+  }),
+
+  updateCardType:  function() {
     var unmaskedValue = this.get('unmaskedValue') || '',
         cardType;
 
@@ -59,5 +63,6 @@ export default InputMaskComponent.extend({
     }
 
     this.set('cardType', cardType);
-  })
+  }.on('didInsertElement')
+
 });
