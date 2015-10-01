@@ -26,6 +26,8 @@ import Ember from 'ember';
 export default Ember.TextField.extend({
   classNames: ['input-mask'],
 
+  type="tel",
+
   mask: '',
 
   showMaskOnFocus: true,
